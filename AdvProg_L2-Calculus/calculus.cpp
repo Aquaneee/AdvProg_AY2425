@@ -20,7 +20,18 @@ double mySqrt(double x);
 ***/
 double myCos(double x) 
 {
-    return 0.0;
+    const int TERMS = 10; // Số lượng số hạng trong chuỗi Taylor
+
+    double term = 1.0; // Giá trị đầu tiên của chuỗi Taylor
+    double sum = term;
+
+    for (int n = 1; n < TERMS; ++n) 
+    {
+        term *= -x * x / (2 * n * (2 * n - 1));
+        sum += term;
+    }
+    
+    return sum;
 }
 
 /***
@@ -29,11 +40,19 @@ double myCos(double x)
     Returns:
         double: sine of x
 ***/
-double mySin(double x)
+double mySin(double x) 
 {
-    return 0.0;
-}
+    double term = x; // Giá trị đầu tiên của chuỗi Taylor
+    double sum = term;
 
+    for (int n = 1; n < TERMS; ++n) 
+    {
+        term *= -x * x / ((2 * n + 1) * (2 * n)); // Cập nhật số hạng
+        sum += term;
+    }
+    
+    return sum;
+}
 
 /***
     Args:
@@ -47,6 +66,14 @@ double mySqrt(double x) {
         exit(1);
     }
 
-    
-    return 0;
+    if (x == 0) return 0; // Căn bậc hai của 0 là 0
+
+    double guess = x;
+    const double epsilon = 1e-6; // Sai số chấp nhận
+
+    while (fabs(guess * guess - x) > epsilon) {
+        guess = (guess + x / guess) / 2;
+    }
+
+    return guess;
 }
